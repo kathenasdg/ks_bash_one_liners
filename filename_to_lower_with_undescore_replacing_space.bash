@@ -36,8 +36,10 @@ printf "\n%b>>> Conversion task is running. <<<%b\n\n" "${yellow_text}" \
 # Convert to lower case and replace spaces and dashes with nderscores.
 for in_filename in *
 do
-    out_filename=${in_filename,,}
-    mv "$in_filename" "${out_filename//[ |-]/_}"
+    if [ -f "$in_filename" ]; then
+        newname=$(echo "$in_filename" | sed -e 's/ /_/g' | tr '[:upper:]' '[:lower:]')
+        mv -f "$in_filename" "$newname" 
+    fi
 done
 
 # Notify user that the task has completed.
